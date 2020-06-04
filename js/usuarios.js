@@ -36,11 +36,11 @@ function cadUsuario(){
   const endereco = document.getElementById("endereco").value;
   const telefone = document.getElementById("telefone").value;
   const email = document.getElementById("email").value;
-  const cidade = document.getElementById("cidade").value;
+  
   const senha = document.getElementById("senha").value;
   let id = usuarios.length;
-  const usuario = {id: id++,
-     nome, endereco, telefone, email, cidade,senha};
+  const usuario = {id: Date.now(),
+     nome, endereco, telefone, email,senha,status: 'Ativo'};
      //usuarios.push(usuario); 
   // gravar no localstorage
   //window.localStorage.setItem("usuarios",JSON.stringify([]));
@@ -204,25 +204,36 @@ function cadUsuario(){
       }); 
       document.getElementById("senha").value = '';
      }else{
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        onOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
-      
-      Toast.fire({
-        icon: 'success',
-        title: `Bem vindo ${usuariosGravados[usuarioIndex].nome}`
-      });
-      setInterval(function(){
-        window.location.href = "dashboard.html"; 
-      }),3000;
+       
+       if(usuariosGravados[usuarioIndex].status === 'Ativo'){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+          
+          Toast.fire({
+            icon: 'success',
+            title: `Bem vindo ${usuariosGravados[usuarioIndex].nome}`
+          });
+          setInterval(function(){
+            window.location.href = "dashboard.html"; 
+          }),3000;
+      }else{ // usuario inativo
+        Swal.fire({
+    
+          icon: 'warning',
+          title: 'Usuário sem permissão para utilizar o sistema!!',
+          showConfirmButton: false,
+          timer: 1500
+        }); 
+      }
         
       }
       
